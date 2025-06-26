@@ -691,7 +691,7 @@ int main(int argc, char** argv)
   upper_phy_sample_config.ssb_config.cp                = cyclic_prefix::NORMAL;
   upper_phy_sample_config.ssb_config.period_ms         = 5;
   upper_phy_sample_config.ssb_config.beta_pss_dB       = 0.0;
-  upper_phy_sample_config.ssb_config.ssb_idx           = {0};
+  upper_phy_sample_config.ssb_config.ssb_idx           = {1};
   upper_phy_sample_config.ssb_config.L_max             = 8;
   upper_phy_sample_config.ssb_config.subcarrier_offset = subcarrier_offset;
   upper_phy_sample_config.ssb_config.offset_pointA     = ssb_offset_pointA_subc_rb;

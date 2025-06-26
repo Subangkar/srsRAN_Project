@@ -21,6 +21,8 @@
  */
 
 #include "sib_pdu_assembler.h"
+
+#include "srsran/srslog/logexlogger.h"
 #include "srsran/srslog/srslog.h"
 
 using namespace srsran;
@@ -75,6 +77,7 @@ unsigned sib_pdu_assembler::handle_new_sib1_payload(const byte_buffer& sib1_pdu)
 
 span<const uint8_t> sib_pdu_assembler::encode_sib1_pdu(unsigned si_version, units::bytes tbs_bytes)
 {
+  LOG_ONCE("Encoding SIB1 PDU with version %d", si_version);
   return encode_si_pdu(0, si_version, tbs_bytes);
 }
 

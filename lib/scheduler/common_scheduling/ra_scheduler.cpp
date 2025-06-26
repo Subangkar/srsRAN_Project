@@ -33,6 +33,7 @@
 #include "srsran/ran/band_helper.h"
 #include "srsran/ran/resource_allocation/resource_allocation_frequency.h"
 #include "srsran/ran/sch/tbs_calculator.h"
+#include "srsran/srslog/logexlogger.h"
 #include "srsran/support/compiler.h"
 
 using namespace srsran;
@@ -743,6 +744,7 @@ void ra_scheduler::fill_rar_grant(cell_resource_allocator&         res_alloc,
     msg3_info.tpc     = (get_pusch_cfg().msg3_delta_power.to_int() + 6) / 2;
     msg3_info.csi_req = false;
 
+    LOG("Msg3.TA: %d", msg3_info.ta);
     // Allocate Msg3 RBs.
     const ofdm_symbol_range& symbols = pusch_td_alloc_list[msg3_candidate.pusch_td_res_index].symbols;
     msg3_alloc.ul_res_grid.fill(grant_info{get_dl_bwp_cfg().scs, symbols, msg3_candidate.crbs});

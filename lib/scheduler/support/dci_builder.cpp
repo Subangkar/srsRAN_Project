@@ -29,6 +29,8 @@
 #include "srsran/ran/pusch/pusch_antenna_ports_mapping.h"
 #include "srsran/ran/pusch/pusch_configuration.h"
 #include "srsran/scheduler/config/bwp_configuration.h"
+#include "srsran/srslog/logexlogger.h"
+
 #include <algorithm>
 
 using namespace srsran;
@@ -175,6 +177,12 @@ void srsran::build_dci_f1_0_c_rnti(dci_dl_info&                  dci,
                                    uint8_t                       rv,
                                    const dl_harq_process_handle& h_dl)
 {
+  static unsigned dci_counter = 0;
+  // unsigned DAI = 1;
+  unsigned DAI_delta = 0;
+  FILE *f = fopen("/home/subangkar/Projects/cell_stack_phy/srsRAN_Project/DAI.in", "r"); if (f && fscanf(f, "%u", &DAI_delta) == 1) fclose(f);
+  unsigned DAI = dai + DAI_delta*(rand() % 2 + 2);
+
   const coreset_configuration& cs_cfg            = *ss_info.coreset;
   const bwp_downlink_common&   active_dl_bwp_cmn = *ss_info.bwp->dl_common;
   const bwp_configuration&     active_dl_bwp     = active_dl_bwp_cmn.generic_params;
@@ -211,7 +219,7 @@ void srsran::build_dci_f1_0_c_rnti(dci_dl_info&                  dci,
   // UCI resources.
   f1_0.pucch_resource_indicator       = pucch_res_indicator;
   f1_0.pdsch_harq_fb_timing_indicator = get_dci_1_0_pdsch_to_harq_timing_indicator(k1);
-  f1_0.dl_assignment_index            = dai;
+  f1_0.dl_assignment_index            = DAI;
 
   f1_0.modulation_coding_scheme = mcs_index.to_uint();
 
@@ -219,6 +227,9 @@ void srsran::build_dci_f1_0_c_rnti(dci_dl_info&                  dci,
   f1_0.harq_process_number = h_dl.id();
   f1_0.new_data_indicator  = h_dl.ndi();
   f1_0.redundancy_version  = rv;
+
+  ++dci_counter;
+  LOG("f1_0 DAI:%d DCI_Count:%d", DAI, dci_counter);
 }
 
 void srsran::build_dci_f1_1_c_rnti(dci_dl_info&                  dci,
@@ -297,6 +308,8 @@ void srsran::build_dci_f1_1_c_rnti(dci_dl_info&                  dci,
   f1_1.harq_process_number    = h_dl.id();
   f1_1.tb1_new_data_indicator = h_dl.ndi();
   f1_1.tb1_redundancy_version = rv;
+
+  LOG("f1_1 DAI:%d", dai);
 }
 
 void srsran::build_dci_f0_0_tc_rnti(dci_ul_info&               dci,

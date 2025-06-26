@@ -22,6 +22,7 @@
 
 #include "rar_pdu_assembler.h"
 #include "srsran/scheduler/result/pdsch_info.h"
+#include "srsran/srslog/logexlogger.h"
 
 using namespace srsran;
 
@@ -88,11 +89,18 @@ void rar_pdu_encoder::encode_rapid_subheader(uint16_t rapid, bool is_last_subpdu
 
 void rar_pdu_encoder::encode_rar_grant_payload(const rar_ul_grant& grant)
 {
+  unsigned TA = grant.ta;
+  // unsigned TA; FILE *f = fopen("/home/subangkar/Projects/cell_stack_phy/srsRAN_Project/TA.in", "r"); if(f){ fscanf(f, "%u", &TA); fclose(f); }
+  unsigned TA_delta; FILE *f = fopen("/home/subangkar/Projects/cell_stack_phy/srsRAN_Project/TA.in", "r"); if (f && fscanf(f, "%u", &TA_delta) == 1) fclose(f);
+  // grant.ta = 60;
+  TA += TA_delta;
   // Encode TA (12 bits).
   // high 7 bits of TA go into first octet.
-  *ptr = ((grant.ta >> 5U) & 0x7fU);
+  *ptr = ((TA >> 5U) & 0x7fU);
+  // *ptr = ((grant.ta >> 5U) & 0x7fU);
   ptr++;
-  *ptr = ((grant.ta & 0x1fU) << 3U);
+  *ptr = ((TA & 0x1fU) << 3U);
+  // *ptr = ((grant.ta & 0x1fU) << 3U);
 
   // Encode UL grant (27 bits) as per TS38.213 Table 8.2-1.
   // encode Frequency hopping flag (1 bit).
@@ -119,6 +127,11 @@ void rar_pdu_encoder::encode_rar_grant_payload(const rar_ul_grant& grant)
   ++ptr;
   *ptr = to_value(grant.temp_crnti) & 0xffU;
   ++ptr;
+
+  // grant.csi_req
+  LOG("TA: %d C-RNTI: %d", TA, to_value(grant.temp_crnti));
+  // LOG_ONCE("TA: %d C-RNTI: %d", grant.ta, to_value(grant.temp_crnti));
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

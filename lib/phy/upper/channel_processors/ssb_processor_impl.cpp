@@ -22,6 +22,7 @@
 
 #include "ssb_processor_impl.h"
 #include "srsran/ran/cyclic_prefix.h"
+#include "srsran/srslog/logexlogger.h"
 #include "srsran/support/math/math_utils.h"
 
 using namespace srsran;
@@ -52,6 +53,8 @@ void ssb_processor_impl::process(resource_grid_writer& grid, const pdu_t& pdu)
   pbch_msg.payload = pdu.bch_payload;
   pbch_msg.sfn     = pdu.slot.sfn();
   pbch_msg.k_ssb   = pdu.subcarrier_offset;
+
+  LOG_ONCE("Cell ID: %d| SSB/Beam Index: %d | SFN: %d", pbch_msg.N_id, pbch_msg.ssb_idx, pbch_msg.sfn);
 
   // Encode PBCH
   std::array<uint8_t, pbch_encoder::E> encoded_bits;

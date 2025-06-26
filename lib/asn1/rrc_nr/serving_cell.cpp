@@ -21,6 +21,7 @@
  */
 
 #include "srsran/asn1/rrc_nr/serving_cell.h"
+#include "srsran/srslog/logexlogger.h"
 using namespace asn1;
 using namespace asn1::rrc_nr;
 
@@ -4460,6 +4461,7 @@ void codebook_cfg_s::codebook_type_c_::to_json(json_writer& j) const
       j.write_bool("subbandAmplitude", c.get<type2_s_>().subband_amplitude);
       j.write_str("numberOfBeams", c.get<type2_s_>().nof_beams.to_string());
       j.end_obj();
+      LOG(c.get<type2_s_>().nof_beams.to_string());
       break;
     default:
       log_invalid_choice_id(type_, "codebook_cfg_s::codebook_type_c_");

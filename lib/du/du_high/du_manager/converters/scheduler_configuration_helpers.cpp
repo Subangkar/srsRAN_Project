@@ -25,6 +25,7 @@
 #include "srsran/du/du_cell_config.h"
 #include "srsran/scheduler/config/logical_channel_config_factory.h"
 #include "srsran/scheduler/config/sched_cell_config_helpers.h"
+#include "srsran/srslog/logexlogger.h"
 
 using namespace srsran;
 using namespace srs_du;
@@ -53,13 +54,14 @@ srsran::srs_du::make_sched_cell_config_req(du_cell_index_t               cell_in
   sched_req.dmrs_typeA_pos       = du_cfg.dmrs_typeA_pos;
   sched_req.tdd_ul_dl_cfg_common = du_cfg.tdd_ul_dl_cfg_common;
   sched_req.ntn_cs_koffset       = du_cfg.ntn_cs_koffset;
-  sched_req.nof_beams            = 1;
+  sched_req.nof_beams            = 5;
 
   sched_req.coreset0     = du_cfg.coreset0_idx;
   sched_req.searchspace0 = du_cfg.searchspace0_idx;
 
   // Convert SIB1 and SI message info scheduling config.
   sched_req.sib1_payload_size = si_payload_sizes[0];
+  LOG_ONCE("SIB1 payload size: %d", sched_req.sib1_payload_size);
   if (du_cfg.si_config.has_value()) {
     sched_req.si_scheduling.emplace();
     sched_req.si_scheduling->si_window_len_slots = du_cfg.si_config->si_window_len_slots;

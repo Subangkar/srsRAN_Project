@@ -69,6 +69,8 @@
 // This include is not unused - it helps prevent false alarms from the thread sanitizer.
 #include "srsran/support/tsan_options.h"
 
+#include "srsran/srslog/logexlogger.h"
+
 using namespace srsran;
 
 /// \file
@@ -213,7 +215,7 @@ int main(int argc, char** argv)
   app.allow_config_extras(CLI::config_extras_mode::error);
   // Fill the generic application arguments to parse.
   populate_cli11_generic_args(app);
-
+  LOG("From main");
   gnb_appconfig gnb_cfg;
   // Configure CLI11 with the gNB application configuration schema.
   configure_cli11_with_gnb_appconfig_schema(app, gnb_cfg);

@@ -23,6 +23,8 @@
 #include "lower_phy_impl.h"
 #include "srsran/phy/lower/lower_phy_rx_symbol_context.h"
 
+#include <srsran/srslog/logexlogger.h>
+
 using namespace srsran;
 
 lower_phy_impl::lower_phy_impl(configuration& config) :
@@ -40,6 +42,8 @@ lower_phy_impl::lower_phy_impl(configuration& config) :
   srsran_assert(config.rx_symbol_notifier != nullptr, "Invalid Rx symbol notifier.");
   srsran_assert(config.error_notifier != nullptr, "Invalid error notifier.");
   srsran_assert(config.metrics_notifier != nullptr, "Invalid metrics notifier.");
+
+  LOG("creating lower phy impl");
 
   // Connect external interfaces.
   notification_adaptor.connect_timing_notifier(*config.timing_notifier);

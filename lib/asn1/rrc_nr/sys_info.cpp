@@ -21,6 +21,8 @@
  */
 
 #include "srsran/asn1/rrc_nr/sys_info.h"
+
+#include "srsran/srslog/logexlogger.h"
 using namespace asn1;
 using namespace asn1::rrc_nr;
 
@@ -3293,6 +3295,8 @@ void carrier_freq_eutra_s::to_json(json_writer& j) const
     j.end_obj();
   }
   j.end_obj();
+
+  LOG_ONCE(j.to_string().c_str());
 }
 
 // CarrierFreqEUTRA-v1610 ::= SEQUENCE
@@ -6792,6 +6796,8 @@ void sib2_s::to_json(json_writer& j) const
     }
   }
   j.end_obj();
+
+  LOG_ONCE(j.to_string().c_str());
 }
 
 const char* sib2_s::cell_resel_info_common_s_::q_hyst_opts::to_string() const
@@ -10939,6 +10945,8 @@ void sib1_s::to_json(json_writer& j) const
     non_crit_ext.to_json(j);
   }
   j.end_obj();
+
+  LOG_ONCE(j.to_string().c_str());
 }
 
 void sib1_s::uac_barr_info_s_::uac_access_category1_sel_assist_info_c_::destroy_()
